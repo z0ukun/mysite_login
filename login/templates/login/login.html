@@ -1,0 +1,44 @@
+{#通过{% extends 'base.html' %}继承了‘base.html’模板的内容;#}
+{% extends '../templates/base.html' %}
+{% load staticfiles %}
+{#通过{% block title %}登录{% endblock %}设置了专门的title;#}
+{% block title %}登录{% endblock %}
+{#通过block css引入了针对性的login.css样式文件#}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'CSS/login.css' %}">
+{% endblock %}
+{#主体内容定义在block content内部#}
+{% block content %}
+    <div class="container">
+        <div class="col-md-4 col-md-offset-4">
+            <form class='form-login' action="/login/" method="post">
+
+                {% if message %}
+                    <div class="alert alert-warning">{{ message }}</div>
+                {% endif %}
+                {#在form表单里面添加csrf_token标签#}
+
+                {% csrf_token %}
+                <h2 class="text-center">欢迎登录</h2>
+
+                <div class="form-group">
+                    {{ login_form.username.label }}
+                    {{ login_form.username }}
+                </div>
+                <div class="form-group">
+                    {{ login_form.password.label }}
+                    {{ login_form.password }}
+                </div>
+
+                <div class="form-group">
+                    {{ login_form.captcha.errors }}
+                    {{ login_form.captcha.label }}
+                    {{ login_form.captcha }}
+                </div>
+                {#添加了一个重置按钮#}
+                <button type="reset" class="btn btn-default pull-left">重置</button>
+                <button type="submit" class="btn btn-primary pull-right">提交</button>
+            </form>
+        </div>
+    </div> <!-- /container -->
+{% endblock %}
